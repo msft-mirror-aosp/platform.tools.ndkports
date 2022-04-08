@@ -12,4 +12,4 @@ RUN mv android-ndk-r20b /ndk
 
 WORKDIR /src
 ENTRYPOINT ["./gradlew"]
-CMD ["-PndkPath=/ndk", "release"]
+CMD ["-PndkPath=/ndk", "run"]

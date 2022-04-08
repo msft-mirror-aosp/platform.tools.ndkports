@@ -20,8 +20,9 @@ import java.io.File
 
 object : MesonPort() {
     override val name = "jsoncpp"
-    override val version = "1.8.4"
-    override val mavenVersion = "$version-alpha-1"
+    override val version = "1.9.1"
+    override val url =
+        "https://github.com/open-source-parsers/jsoncpp/archive/$version.tar.gz"
 
     override val license = License(
         "The JsonCpp License",
@@ -32,17 +33,14 @@ object : MesonPort() {
         Module("jsoncpp")
     )
 
-    override fun extractSource(
-        sourceTarball: File,
+    override fun fetchSource(
         sourceDirectory: File,
         workingDirectory: File
     ): Result<Unit, String> =
-        super.extractSource(sourceTarball, sourceDirectory, workingDirectory)
-            .onSuccess {
-                // jsoncpp has a "version" file on the include path that
-                // conflicts with
-                // https://en.cppreference.com/w/cpp/header/version. Remove it
-                // so we can build.
-                sourceDirectory.resolve("version").delete()
-            }
+        super.fetchSource(sourceDirectory, workingDirectory).onSuccess {
+            // jsoncpp has a "version" file on the include path that conflicts
+            // with https://en.cppreference.com/w/cpp/header/version. Remove it
+            // so we can build.
+            sourceDirectory.resolve("version").delete()
+        }
 }
