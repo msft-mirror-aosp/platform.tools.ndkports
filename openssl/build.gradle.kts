@@ -34,7 +34,7 @@ plugins {
 ndkPorts {
     ndkPath.set(File(project.findProperty("ndkPath") as String))
     source.set(project.file("src.tar.gz"))
-    minSdkVersion.set(16)
+    minSdkVersion.set(21)
 }
 
 val buildTask = tasks.register<AdHocPortTask>("buildPort") {
