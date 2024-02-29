@@ -2,7 +2,7 @@ import com.android.ndkports.AndroidExecutableTestTask
 import com.android.ndkports.CMakeCompatibleVersion
 import com.android.ndkports.CMakePortTask
 
-val portVersion = "1.11.0"
+val portVersion = "1.14.0"
 
 group = "com.android.ndk.thirdparty"
 version = "$portVersion${rootProject.extra.get("snapshotSuffix")}"
@@ -16,7 +16,7 @@ plugins {
 ndkPorts {
     ndkPath.set(File(project.findProperty("ndkPath") as String))
     source.set(project.file("src.tar.gz"))
-    minSdkVersion.set(16)
+    minSdkVersion.set(21)
 }
 
 val buildTask = tasks.register<CMakePortTask>("buildPort") {
