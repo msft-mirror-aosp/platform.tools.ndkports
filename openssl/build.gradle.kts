@@ -2,25 +2,7 @@ import com.android.ndkports.AdHocPortTask
 import com.android.ndkports.AndroidExecutableTestTask
 import com.android.ndkports.CMakeCompatibleVersion
 
-fun openSslVersionToCMakeVersion(openSslVersion: String): CMakeCompatibleVersion {
-    val (major, minor, microAndLetter) = openSslVersion.split(".")
-    val letter = microAndLetter.last()
-    val micro = microAndLetter.substringBefore(letter)
-    val tweak = if (letter.isDigit()) {
-        // 1.1.1 is 1.1.1.0.
-        0
-    } else {
-        // 1.1.1a is 1.1.1.1.
-        letter.toInt() - 'a'.toInt() + 1
-    }
-
-    return CMakeCompatibleVersion(
-        major.toInt(), minor.toInt(), micro.toInt(), tweak
-    )
-}
-
-val portVersion = "1.1.1s"
-val prefabVersion = openSslVersionToCMakeVersion(portVersion)
+val portVersion = "3.2.1"
 
 group = "com.android.ndk.thirdparty"
 version = "$portVersion${rootProject.extra.get("snapshotSuffix")}"
@@ -34,7 +16,7 @@ plugins {
 ndkPorts {
     ndkPath.set(File(project.findProperty("ndkPath") as String))
     source.set(project.file("src.tar.gz"))
-    minSdkVersion.set(16)
+    minSdkVersion.set(21)
 }
 
 val buildTask = tasks.register<AdHocPortTask>("buildPort") {
@@ -71,7 +53,9 @@ val buildTask = tasks.register<AdHocPortTask>("buildPort") {
 }
 
 tasks.prefabPackage {
-    version.set(prefabVersion)
+    version.set(CMakeCompatibleVersion.parse(portVersion))
+
+    licensePath.set("LICENSE.txt")
 
     modules {
         create("crypto")
